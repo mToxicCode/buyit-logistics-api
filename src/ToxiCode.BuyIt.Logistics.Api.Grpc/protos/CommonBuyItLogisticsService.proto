@@ -1,0 +1,33 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "ToxiCode.BuyIt.Logistics.Api.Grpc";
+
+import "google/api/annotations.proto";
+
+package BuyIt.Logistics;
+
+message AddItem{
+  string name = 1;
+}
+
+message ItemModel{
+  int64 id = 1;
+  string name = 2;
+}
+
+message AddItemsRequest{
+  repeated AddItem add_items = 1;
+}
+
+message AddItemsResponse{
+  repeated ItemModel items = 1;
+}
+
+service CommonBuyItLogisticsService{
+  rpc AddItems(AddItemsRequest) returns (AddItemsResponse){
+    option(google.api.http) = {
+      post: "/v1/common/items/add"
+      body: "*"
+    };
+  }
+}
