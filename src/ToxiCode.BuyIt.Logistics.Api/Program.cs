@@ -4,7 +4,6 @@ using System.Net;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using ToxiCode.BuyIt.Logistics.Api;
 using ToxiCode.BuyIt.Logistics.Api.DataLayer.Extensions;
-using ToxiCode.BuyIt.Logistics.Api.GrpcControllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,8 +22,6 @@ static void Listen(KestrelServerOptions kestrelServerOptions, int? port, HttpPro
         return;
 
     var address = IPAddress.Loopback;
-        // ? IPAddress.Any
-        // : IPAddress.Loopback;
 
         
         
@@ -43,7 +40,6 @@ services.AddGrpcSwagger();
 services
     .AddHttpContextAccessor()
     .AddSingleton<HttpCancellationTokenAccessor>();
-services.AddSingleton<CommonBuyItLogisticsService>();
 
 #endregion
 
@@ -55,7 +51,6 @@ app.UseSwagger();
 app.UseSwaggerUI();
 app.UseAuthorization();
 app.MapControllers();
-app.MapGrpcService<CommonBuyItLogisticsService>().RequireHost("*:5002");
 app.Migrate();
 app.Run();
 
