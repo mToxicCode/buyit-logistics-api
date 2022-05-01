@@ -1,6 +1,8 @@
 using System.Reflection;
 using FluentMigrator.Runner;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using ToxiCode.BuyIt.Logistics.Api.DataLayer.Repository;
 using ToxiCode.BuyIt.Logistics.Api.DataLayer.Utils;
 
