@@ -9,6 +9,7 @@
     <ItemGroup>
         <PackageReference Include="AutoMapper" Version="11.0.1" />
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+        <PackageReference Include="Confluent.Kafka" Version="1.9.0-RC7" />
         <PackageReference Include="Dapper" Version="2.0.123" />
         <PackageReference Include="FluentMigrator" Version="3.3.2" />
         <PackageReference Include="FluentMigrator.Runner" Version="3.3.2" />
@@ -16,9 +17,12 @@
         <PackageReference Include="Microsoft.AspNetCore.Grpc.Swagger" Version="0.1.0-alpha.21317.5" />
         <PackageReference Include="Npgsql" Version="6.0.3" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.3" />
+        <PackageReference Include="Scrutor" Version="4.1.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     
       <PackageReference Include="FluentMigrator.Runner" Version="3.3.2" />
+    
+      <PackageReference Include="ToxiCode.BuyIt.Api.Contracts" Version="0.0.9" />
     </ItemGroup>
 
     <ItemGroup>

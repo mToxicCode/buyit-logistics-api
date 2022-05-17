@@ -9,10 +9,10 @@ namespace ToxiCode.BuyIt.Logistics.Api.HttpControllers;
 [ApiController]
 public class ItemController : ControllerBase
 {
-    private readonly ItemServiceResolver _resolver;
+    private readonly IItemService _resolver;
     private readonly HttpCancellationTokenAccessor _cancellationToken;
 
-    public ItemController(ItemsRepository repository, HttpCancellationTokenAccessor cancellationToken, ItemServiceResolver resolver)
+    public ItemController(HttpCancellationTokenAccessor cancellationToken, IItemService resolver)
     {
         _cancellationToken = cancellationToken;
         _resolver = resolver;

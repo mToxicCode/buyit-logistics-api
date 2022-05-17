@@ -3,7 +3,11 @@
 using System.Net;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using ToxiCode.BuyIt.Logistics.Api;
+using ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Items;
 using ToxiCode.BuyIt.Logistics.Api.DataLayer.Extensions;
+using ToxiCode.BuyIt.Logistics.Api.Grpc;
+using ToxiCode.BuyIt.Logistics.Api.GrpcServices;
+using ToxiCode.BuyIt.Logistics.Api.Infrustructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,7 +43,13 @@ services.AddSwaggerGen();
 services.AddGrpcSwagger();
 services
     .AddHttpContextAccessor()
-    .AddSingleton<HttpCancellationTokenAccessor>();
+    .AddSingleton<HttpCancellationTokenAccessor>()
+    .AddSingleton<CommonGrpcService>()
+    .AddKafka(builder.Configuration);
+
+services
+    .AddSingleton<IItemService, ItemServiceResolver>()
+    .Decorate<IItemService, ItemsServiceNotificationDecorator>();
 
 #endregion
 
@@ -51,6 +61,7 @@ app.UseSwagger();
 app.UseSwaggerUI();
 app.UseAuthorization();
 app.MapControllers();
+app.MapGrpcService<CommonGrpcService>();
 app.Migrate();
 app.Run();
 
