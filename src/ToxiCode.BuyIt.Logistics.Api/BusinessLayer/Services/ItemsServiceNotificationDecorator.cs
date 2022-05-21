@@ -1,11 +1,12 @@
 using System.Text.Json;
-using Confluent.Kafka;
-using ToxiCode.BuyIt.Api.Contracts;
-using ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Items.Commands;
+using ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Commands;
+using ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Commands.ChangeItemById.Contracnts;
+using ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Commands.CreateItem.Contracts;
 using ToxiCode.BuyIt.Logistics.Api.Kafka;
+using ToxiCode.BuyIt.Api.Contracts;
 using Action = ToxiCode.BuyIt.Api.Contracts.Action;
 
-namespace ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Items;
+namespace ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Services;
 
 public class ItemsServiceNotificationDecorator : IItemService
 {
@@ -23,8 +24,8 @@ public class ItemsServiceNotificationDecorator : IItemService
         var result = await _target.CreateItem(request, cancellationToken);
         var notification = new CreatedItemNotification()
         {
-            Price = request.Price,
-            Name = request.Name,
+            Price = request.Item.Price,
+            Name = request.Item.Name,
             Description = "Not provided",
             Id = result,
             OwnerId = Guid.NewGuid()

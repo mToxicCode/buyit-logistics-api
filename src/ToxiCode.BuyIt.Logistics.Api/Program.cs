@@ -4,10 +4,9 @@ using System.Net;
 using MediatR;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using ToxiCode.BuyIt.Logistics.Api;
-using ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Items;
+using ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Services;
 using ToxiCode.BuyIt.Logistics.Api.DataLayer.Extensions;
-using ToxiCode.BuyIt.Logistics.Api.Grpc;
-using ToxiCode.BuyIt.Logistics.Api.GrpcServices;
+using ToxiCode.BuyIt.Logistics.Api.GrpcControllers;
 using ToxiCode.BuyIt.Logistics.Api.Infrustructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -46,12 +45,11 @@ services.AddMediatR(typeof(Program));
 services
     .AddHttpContextAccessor()
     .AddSingleton<HttpCancellationTokenAccessor>()
-    .AddSingleton<CommonGrpcService>()
+    .AddSingleton<ItemsGrpcController>()
+    .AddSingleton<OrdersGrpcController>()
     .AddKafka(builder.Configuration);
 
-services
-    .AddSingleton<IItemService, ItemServiceResolver>()
-    .Decorate<IItemService, ItemsServiceNotificationDecorator>();
+services.AddSingleton<ItemsServiceNotificationDecorator>();
 
 #endregion
 
@@ -63,7 +61,8 @@ app.UseSwagger();
 app.UseSwaggerUI();
 app.UseAuthorization();
 app.MapControllers();
-app.MapGrpcService<CommonGrpcService>();
+app.MapGrpcService<ItemsGrpcController>();
+app.MapGrpcService<OrdersGrpcController>();
 app.Migrate();
 app.Run();
 

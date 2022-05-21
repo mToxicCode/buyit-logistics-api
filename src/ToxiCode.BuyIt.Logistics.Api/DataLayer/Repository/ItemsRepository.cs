@@ -38,7 +38,7 @@ public class ItemsRepository
         const string insertItemQuery =
             $@"INSERT INTO {SqlConstants.Items} 
                     (name, price, weight)
-            VALUES (@Name, @Price, @Weight) returning id";
+            VALUES (@Name, @Price, @Weight, @Height, @Lenght, @Width) returning id";
 
         await using var db = _connectionFactory.CreateDatabase(cancellationToken);
 
@@ -46,7 +46,10 @@ public class ItemsRepository
         {
             request.Item.Name,
             request.Item.Price,
-            request.Item.Weight
+            request.Item.Weight,
+            request.Item.Height,
+            request.Item.Lenght,
+            request.Item.Width
         });
         return new CreateItemResponse()
         {

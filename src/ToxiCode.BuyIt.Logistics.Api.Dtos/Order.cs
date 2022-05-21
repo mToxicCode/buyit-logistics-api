@@ -1,4 +1,6 @@
-﻿namespace Dtos;
+﻿using ToxiCode.BuyIt.Logistics.Api.Grpc;
+
+namespace Dtos;
 
 public class Order
 {
@@ -7,4 +9,5 @@ public class Order
     public Place From { get; set; } = null!;
     public Place To { get; set; } = null!;
     public long[]? Articles { get; set; } 
+    public OrderStatus Status { get; set; } 
 }

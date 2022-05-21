@@ -1,0 +1,91 @@
+syntax = "proto3";
+option csharp_namespace = "ToxiCode.BuyIt.Logistics.Api.Grpc";
+import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
+package BuyIt.Logistics;
+
+service ItemsService{
+  rpc AddItems(AddItemsRequest) returns (AddItemsResponse){
+    option(google.api.http) = {
+      post: "/v1/common/items/add"
+      body: "*"
+    };
+  }
+  rpc GetItems(GetItemsRequest) returns (GetItemsResponse){
+    option(google.api.http) = {
+      post: "/v1/common/items/add"
+      body: "*"
+    };
+  }
+  rpc ChangeItems(ChangeItemsRequest) returns (ChangeItemsResponse){
+    option(google.api.http) = {
+      post: "/v1/common/items/add"
+      body: "*"
+    };
+  }
+}
+
+message AddItemsRequest{
+  repeated AddItem add_items = 1;
+}
+
+message AddItem{
+  string item_name = 1;
+  string seller_id = 2;
+  int32 weight = 3;
+  int32 height = 4;
+  int32 length = 5;
+  int32 width = 6;
+  int32 count = 7;
+  string request_item_id = 8;
+  repeated string img_urls = 9;
+}
+
+message AddItemsResponse{
+  repeated ItemResult items = 1;
+}
+
+message ItemResult{
+  int64 item_id = 1;
+  string request_item_id = 2;
+  string result_message = 3;
+}
+
+message GetItemsRequest{
+  repeated int64 items_ids = 1;
+}
+
+message GetItemsResponse{
+  repeated Item items = 1;
+}
+
+message Item{
+  int64 item_id = 1;
+  int32 weight = 2;
+  int32 height = 3;
+  int32 length = 4;
+  int32 width = 5;
+  int32 available_count = 6;
+  google.protobuf.Timestamp creation_date = 7;
+  google.protobuf.Timestamp change_at = 8;
+}
+
+message ChangeItemsRequest{
+  int64 item_id = 1;
+  string item_name = 2;
+  int32 height = 3;
+  int32 weight = 4;
+  int32 length = 5;
+  int32 width = 6;
+  repeated string img_urls = 7;
+}
+
+message ChangeItemsResponse{
+  repeated ItemChangeResult items = 1;
+}
+
+message ItemChangeResult{
+  int64 item_id = 1;
+  bool item_changed = 2;
+  string result_message = 3;
+}
