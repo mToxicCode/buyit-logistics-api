@@ -1,6 +1,7 @@
 ﻿using Dapper;
-using Dtos.Order;
-using ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Orders.Commands;
+using Dtos;
+using ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Commands;
+using ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Commands.ChangeOrderById.Contracts;
 using ToxiCode.BuyIt.Logistics.Api.DataLayer.Utils;
 
 namespace ToxiCode.BuyIt.Logistics.Api.DataLayer.Repository;
@@ -32,6 +33,8 @@ public class OrdersRepository
 
     public async Task<long> CreateOrder(CreateOrderRequest request, CancellationToken cancellationToken)
     {
+        // Создание заказа
+        
         const string insertOrderQuery =
             $@"INSERT INTO {SqlConstants.Orders} 
                     (date_time, from, to)
@@ -39,24 +42,25 @@ public class OrdersRepository
 
         await using var db = _connectionFactory.CreateDatabase(cancellationToken);
 
-        var articleId = await db.Connection.QueryFirstOrDefaultAsync<long>(insertOrderQuery, new
+        var orderId = await db.Connection.QueryFirstOrDefaultAsync<long>(insertOrderQuery, new
         {
             request.From,
             request.To,
         });
-
+        
+        // Привязка артиклов к заказу
+        
         const string insertItemsInOrderQuery =
-            $@"INSERT INTO {SqlConstants.Articles} 
+            $@"INSERT INTO {SqlConstants.ArticlesInOrder} 
                     (article_id, item_id)
             VALUES (@ArticleId, @ItemId) returning id";
 
-        await db.Connection.ExecuteAsync(insertItemsInOrderQuery, request.Items.Select(x => new
+        await db.Connection.ExecuteAsync(insertItemsInOrderQuery, request.Articles.Select(x => new
         {
-            //Тут ты хотел написать логику и добавить таблицу (Артикл, айди предмета) и добавлять сюда артикл, и связывать артикл с ордер айд
-            //А еще изменить, что бы в ордере не была таблица айтемс
+            
         }));
 
-        return articleId;
+        return orderId;
     }
 
     public async Task DeleteOrderById(long OrderId, CancellationToken cancellationToken)

@@ -1,6 +1,7 @@
-﻿using ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Orders.Commands;
+﻿using ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Commands;
+using ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Commands.ChangeOrderById.Contracts;
 
-namespace ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Orders;
+namespace ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Services;
 
 public interface IOrderService
 {

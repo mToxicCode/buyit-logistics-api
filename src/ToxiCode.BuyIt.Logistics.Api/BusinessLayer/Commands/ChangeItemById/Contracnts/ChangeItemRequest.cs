@@ -1,6 +1,8 @@
-﻿namespace ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Orders.Commands;
+﻿using MediatR;
 
-public class ChangeOrderRequest
+namespace ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Commands.ChangeItemById.Contracnts;
+
+public class ChangeItemRequest : IRequest
 {
     public long Id { get; set; } 
     public string Name { get; set; } = null!; 

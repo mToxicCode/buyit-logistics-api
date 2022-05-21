@@ -1,6 +1,6 @@
-﻿namespace ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Items.Commands;
+﻿namespace ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Commands.ChangeOrderById.Contracts;
 
-public class ChangeItemRequest
+public class ChangeOrderRequest
 {
     public long Id { get; set; } 
     public string Name { get; set; } = null!; 

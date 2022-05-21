@@ -19,17 +19,20 @@ public class InitMigration : ForwardOnlyMigration
         Create.Table(SqlConstants.Places)
             .WithColumn("id").AsInt64().PrimaryKey().Identity()
             .WithColumn("address").AsString(5000).NotNullable().Unique();
-        
+
         Create.Table(SqlConstants.Articles)
             .WithColumn("id").AsInt64().PrimaryKey().Identity()
-            .WithColumn("article_id").AsInt64()
             .WithColumn("item_id").AsInt64();
 
         Create.Table(SqlConstants.Orders)
             .WithColumn("id").AsInt64().PrimaryKey().Identity()
             .WithColumn("date_time").AsDateTime()
             .WithColumn("from").AsInt64().ForeignKey(SqlConstants.Places, "id").NotNullable()
-            .WithColumn("to").AsInt64().ForeignKey(SqlConstants.Places, "id").NotNullable()
-            .WithColumn("article_id").AsInt64().ForeignKey().ForeignKey(SqlConstants.Articles, "id").NotNullable();
+            .WithColumn("to").AsInt64().ForeignKey(SqlConstants.Places, "id").NotNullable();
+
+        Create.Table(SqlConstants.ArticlesInOrder)
+            .WithColumn("id").AsInt64().PrimaryKey().Identity()
+            .WithColumn("article_id").AsInt64().ForeignKey(SqlConstants.Articles, "id").NotNullable()
+            .WithColumn("order_id").AsInt64().ForeignKey(SqlConstants.Orders, "id").NotNullable();
     }
 }
