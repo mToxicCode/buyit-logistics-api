@@ -1,6 +1,9 @@
 ﻿using Dapper;
-using Dtos.Items;
-using ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Items.Commands;
+using Dtos;
+using ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Commands;
+using ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Commands.ChangeItemById;
+using ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Commands.ChangeItemById.Contracnts;
+using ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Commands.CreateItem.Contracts;
 using ToxiCode.BuyIt.Logistics.Api.DataLayer.Utils;
 
 
@@ -30,7 +33,7 @@ public class ItemsRepository
         return requestItem;
     }
 
-    public async Task<long> CreateItem(CreateItemRequest request, CancellationToken cancellationToken)
+    public async Task<CreateItemResponse> CreateItem(CreateItemRequest request, CancellationToken cancellationToken)
     {
         const string insertItemQuery =
             $@"INSERT INTO {SqlConstants.Items} 
@@ -41,11 +44,14 @@ public class ItemsRepository
 
         var id = await db.Connection.QueryFirstOrDefaultAsync<long>(insertItemQuery, new
         {
-            request.Name,
-            request.Price,
-            request.Weight
+            request.Item.Name,
+            request.Item.Price,
+            request.Item.Weight
         });
-        return id;
+        return new CreateItemResponse()
+        {
+            Id = id
+        };
     }
 
     public async Task DeleteItemById(long itemId, CancellationToken cancellationToken)

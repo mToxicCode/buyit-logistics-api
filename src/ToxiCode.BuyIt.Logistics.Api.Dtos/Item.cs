@@ -1,7 +1,8 @@
-﻿namespace ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Items.Commands;
+﻿namespace Dtos;
 
-public class CreateItemRequest
+public class Item
 {
+    public long Id { get; set; }
     public string Name { get; set; } = null!; 
     public decimal Price { get; set; }
     public decimal Weight { get; set; }

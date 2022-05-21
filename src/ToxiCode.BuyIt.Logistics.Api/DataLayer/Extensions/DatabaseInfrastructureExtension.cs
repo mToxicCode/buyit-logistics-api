@@ -21,7 +21,9 @@ public static class InfrastructureExtension
         services
             .AddSingleton<IDbConnectionFactory, DbConnectionFactory>()
             .AddSingleton<DbExecuteWrapper>()
-            .AddSingleton<ItemsRepository>();
+            .AddSingleton<ItemsRepository>()
+            .AddSingleton<ArticlesRepository>()
+            .AddSingleton<OrdersRepository>();
 
         return services.AddFluentMigratorCore()
             .ConfigureRunner(x

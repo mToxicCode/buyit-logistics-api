@@ -1,6 +1,7 @@
 #region Services
 
 using System.Net;
+using MediatR;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using ToxiCode.BuyIt.Logistics.Api;
 using ToxiCode.BuyIt.Logistics.Api.DataLayer.Extensions;
@@ -37,6 +38,7 @@ services.AddEndpointsApiExplorer();
 services.AddDatabaseInfrastructure(builder.Configuration);
 services.AddSwaggerGen();
 services.AddGrpcSwagger();
+services.AddMediatR(typeof(Program));
 services
     .AddHttpContextAccessor()
     .AddSingleton<HttpCancellationTokenAccessor>();

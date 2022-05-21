@@ -1,6 +1,4 @@
-﻿using Dtos.Items;
-
-namespace Dtos.Order;
+﻿namespace Dtos;
 
 public class Order
 {

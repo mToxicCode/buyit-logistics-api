@@ -1,7 +1,9 @@
-﻿using Dtos.Items;
-using ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Items.Commands;
+﻿using ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Commands;
+using ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Commands.ChangeItemById;
+using ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Commands.ChangeItemById.Contracnts;
+using ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Commands.CreateItem.Contracts;
 
-namespace ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Items;
+namespace ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Services;
 
 public interface IItemService
 {
