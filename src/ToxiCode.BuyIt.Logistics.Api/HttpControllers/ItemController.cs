@@ -17,24 +17,11 @@ public class ItemController : ControllerBase
         _cancellationToken = cancellationToken;
         _mediator = mediator;
     }
-    
-    [HttpGet("api/item/all")]
-    public async Task<ActionResult> GetItems(GetItemsRequest request)
-    {
-        return Ok(await _mediator.Send(request));
-    }
-    
-    
+
     [HttpGet("api/item/{itemId:long}")]
     public async Task<ActionResult> GetItemById(long itemId)
     {
         return Ok(await _mediator.Send(itemId));
-    }
-    
-    [HttpPost("api/item")]
-    public async Task<ActionResult<long>> CreateItem([FromBody] CreateItemRequest request)
-    {
-        return Ok(await _mediator.Send(request, _cancellationToken.Token));
     }
     
     [HttpDelete("api/item/{itemId:long}")]
@@ -45,9 +32,9 @@ public class ItemController : ControllerBase
     }
 
     [HttpPut("api/item/")]
-    public async Task<ActionResult> ChangeItem([FromBody] ChangeItemRequest request)
+    public async Task<ActionResult> ChangeItem([FromBody] ChangeItemCommand command)
     {
-        await _mediator.Send(request, _cancellationToken.Token);
+        await _mediator.Send(command, _cancellationToken.Token);
         return Ok();
     }
 }

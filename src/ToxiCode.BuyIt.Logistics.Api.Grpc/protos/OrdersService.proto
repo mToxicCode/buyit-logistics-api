@@ -10,19 +10,19 @@ package BuyIt.Logistics;
 service OrdersService{
   rpc AddOrder(AddOrderRequest) returns (AddOrderResponse){
     option(google.api.http) = {
-      post: "/v1/common/items/add"
+      post: "/v1/orders/add"
       body: "*"
     };
   }
   rpc GetOrders(GetOrdersRequest) returns (GetOrdersResponse){
     option(google.api.http) = {
-      post: "/v1/common/items/add"
+      patch: "/v1/orders/get"
       body: "*"
     };
   }
   rpc OrderPaid(OrderPaidRequest) returns (OrderPaidResponse){
     option(google.api.http) = {
-      post: "/v1/common/items/add"
+      put: "/v1/orders/change"
       body: "*"
     };
   }
@@ -36,6 +36,7 @@ service OrdersService{
 
 message AddOrderRequest{
   repeated ItemAmountPair items = 1;
+  int64 place_id = 2;
 }
 
 message ItemAmountPair{

@@ -10,11 +10,18 @@ public class InitMigration : ForwardOnlyMigration
 {
     public override void Up()
     {
+        Execute.Sql($"CREATE TYPE State AS ENUM ('Default', 'Created', 'Processing', 'Forming', 'Formed', 'Delivering', 'Delivered', 'Cancelled');");
         Create.Table(SqlConstants.Items)
             .WithColumn("id").AsInt64().PrimaryKey().Identity()
-            .WithColumn("name").AsString(1000).NotNullable().Unique()
-            .WithColumn("price").AsDecimal()
-            .WithColumn("weight").AsDecimal();
+            .WithColumn("seller_id").AsGuid()
+            .WithColumn("item_name").AsString(1000).NotNullable()
+            .WithColumn("weight").AsDecimal()
+            .WithColumn("height").AsDecimal()
+            .WithColumn("length").AsDecimal()
+            .WithColumn("width").AsDecimal()
+            .WithColumn("creation_date").AsDateTime().WithDefault(SystemMethods.CurrentUTCDateTime)
+            .WithColumn("changed_at").AsDateTime().WithDefault(SystemMethods.CurrentUTCDateTime)
+            .WithColumn("img_url").AsString().WithDefaultValue("https://www.ceph.txcd.xyz/toxicode-buyit-api/7f2c3f68-af2f-47b6-9628-40fa98906d30.png");
 
         Create.Table(SqlConstants.Places)
             .WithColumn("id").AsInt64().PrimaryKey().Identity()
@@ -26,9 +33,10 @@ public class InitMigration : ForwardOnlyMigration
 
         Create.Table(SqlConstants.Orders)
             .WithColumn("id").AsInt64().PrimaryKey().Identity()
-            .WithColumn("date_time").AsDateTime()
+            .WithColumn("creation_date").AsDateTime().WithDefault(SystemMethods.CurrentUTCDateTime)
             .WithColumn("from").AsInt64().ForeignKey(SqlConstants.Places, "id").NotNullable()
-            .WithColumn("to").AsInt64().ForeignKey(SqlConstants.Places, "id").NotNullable();
+            .WithColumn("to").AsInt64().ForeignKey(SqlConstants.Places, "id").NotNullable()
+            .WithColumn("state").AsCustom("State");
 
         Create.Table(SqlConstants.ArticlesInOrder)
             .WithColumn("id").AsInt64().PrimaryKey().Identity()

@@ -49,7 +49,7 @@ services
     .AddSingleton<OrdersGrpcController>()
     .AddKafka(builder.Configuration);
 
-services.AddSingleton<ItemsServiceNotificationDecorator>();
+// services.AddSingleton<ItemsServiceNotificationDecorator>();
 
 #endregion
 

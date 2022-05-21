@@ -3,7 +3,7 @@ using MediatR;
 
 namespace ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Commands.CreateItem.Contracts;
 
-public class CreateItemRequest : IRequest<CreateItemResponse>
+public class CreateItemCommand : IRequest<CreateItemResponse>
 {
-    public Item Item { get; set; } = null!;
+    public AddItemGrpcDto Item { get; set; } = null!;
 }

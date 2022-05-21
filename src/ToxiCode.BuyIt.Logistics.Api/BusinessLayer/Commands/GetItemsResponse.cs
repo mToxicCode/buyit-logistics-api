@@ -4,5 +4,5 @@ namespace ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Commands;
 
 public class GetItemsResponse
 {
-    public IEnumerable<Item>? Items { get; set; }
+    public IEnumerable<ItemDto> Items { get; set; } = Array.Empty<ItemDto>();
 }
