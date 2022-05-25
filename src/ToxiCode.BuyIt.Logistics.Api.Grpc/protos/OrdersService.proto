@@ -36,7 +36,9 @@ service OrdersService{
 
 message AddOrderRequest{
   repeated ItemAmountPair items = 1;
-  int64 place_id = 2;
+  int64 from_address_id = 4;
+  int64   to_address_id = 5;
+  string user_id = 2;
 }
 
 message ItemAmountPair{
@@ -59,8 +61,11 @@ message GetOrdersResponse{
 
 message Order{
   int64 order_id = 1;
-  OrderStatus order_status = 2;
-  repeated BuyIt.Logistics.Item items = 3;
+  google.protobuf.Timestamp created_date = 2;
+  OrderStatus order_status = 3;
+  int64 from_address_id = 4;
+  int64   to_address_id = 5;
+  repeated int64 articles = 6;
 }
 
 enum OrderStatus{
