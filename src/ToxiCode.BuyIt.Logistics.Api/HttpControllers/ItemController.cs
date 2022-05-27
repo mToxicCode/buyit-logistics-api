@@ -1,8 +1,8 @@
-﻿using MediatR;
+﻿using Dtos;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Commands;
 using ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Commands.ChangeItemById.Contracnts;
-using ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Commands.CreateItem.Contracts;
+using ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Commands.GetItems.Contracts;
 
 namespace ToxiCode.BuyIt.Logistics.Api.HttpControllers;
 
@@ -17,26 +17,37 @@ public class ItemController : ControllerBase
         _cancellationToken = cancellationToken;
         _mediator = mediator;
     }
-    
-    [HttpGet("api/item/all")]
-    public async Task<ActionResult> GetItems(GetItemsRequest request)
+
+    [HttpPost("api/itemsByIds/")]
+    public async Task<ActionResult<ItemDto?>> GetItemByIds(long[] itemsIds)
     {
-        return Ok(await _mediator.Send(request));
+        var command = new GetItemsByIdsCommand
+        {
+            ItemIds = itemsIds
+        };
+        var result = await _mediator.Send(command);
+        return Ok(result.Items);
     }
-    
-    
+
     [HttpGet("api/item/{itemId:long}")]
-    public async Task<ActionResult> GetItemById(long itemId)
+    public async Task<ActionResult<ItemDto?>> GetItemById(long itemId)
     {
-        return Ok(await _mediator.Send(itemId));
+        var command = new GetItemsByIdsCommand()
+        {
+            ItemIds = new[] {itemId}
+        };
+        var result = await _mediator.Send(command);
+        return Ok(result.Items!.FirstOrDefault());
     }
-    
-    [HttpPost("api/item")]
-    public async Task<ActionResult<long>> CreateItem([FromBody] CreateItemRequest request)
+
+    [HttpGet("api/items")]
+    public async Task<ActionResult<IEnumerable<ItemDto?>>> GetItems()
     {
-        return Ok(await _mediator.Send(request, _cancellationToken.Token));
+        var command = new GetItemsCommand();
+        var result = await _mediator.Send(command);
+        return Ok(result.Items);
     }
-    
+
     [HttpDelete("api/item/{itemId:long}")]
     public async Task<ActionResult> DeleteItem(long itemId)
     {
@@ -45,9 +56,9 @@ public class ItemController : ControllerBase
     }
 
     [HttpPut("api/item/")]
-    public async Task<ActionResult> ChangeItem([FromBody] ChangeItemRequest request)
+    public async Task<ActionResult> ChangeItem([FromBody] ChangeItemCommand command)
     {
-        await _mediator.Send(request, _cancellationToken.Token);
+        await _mediator.Send(command, _cancellationToken.Token);
         return Ok();
     }
 }

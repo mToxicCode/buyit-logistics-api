@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <RepositoryUrl>https://github.com/mToxicCode/buyit-logistics-api</RepositoryUrl> 
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <IsPackable>true</IsPackable>
+        <IncludeContentInPack>true</IncludeContentInPack>
+        <ContentTargetFolders>content</ContentTargetFolders>
+        <NoDefaultExcludes>true</NoDefaultExcludes>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="FluentMigrator.Runner" Version="3.3.2" />
+        <PackageReference Include="Google.Api.CommonProtos" Version="2.2.0" />
+        <PackageReference Include="Google.Apis.Core" Version="1.56.0" />
+        <PackageReference Include="Grpc.AspNetCore" Version="2.44.0" />
+        <PackageReference Include="Grpc.Core" Version="2.45.0" />
+        <PackageReference Include="Grpc.Tools" Version="2.45.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Google.Protobuf" Version="3.19.4" />
+        <Protobuf Include="protos/*.proto" GrpcServices="Both" />
+        <Content Include="google/**/*.proto" />
+    </ItemGroup>
+
+</Project>

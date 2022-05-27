@@ -1,0 +1,106 @@
+syntax = "proto3";
+option csharp_namespace = "ToxiCode.BuyIt.Logistics.Api.Grpc";
+import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
+import "protos/Decimal.proto";
+package BuyIt.Logistics;
+
+service ItemsService{
+  rpc AddItem(AddItemRequest) returns (AddItemResponse){
+    option(google.api.http) = {
+      post: "/v1/items/add"
+      body: "*"
+    };
+  }
+  rpc GetItemsByIds(GetItemsByIdsRequest) returns (GetItemsByIdsResponse){
+    option(google.api.http) = {
+      patch: "/v1/items/get"
+      body: "*"
+    };
+  }
+  rpc ChangeItem(ChangeItemRequest) returns (ChangeItemResponse){
+    option(google.api.http) = {
+      put: "/v1/items/change"
+      body: "*"
+    };
+  }
+  rpc AddArticles(AddArticlesRequest) returns (AddArticlesResponse){
+    option(google.api.http) = {
+      put: "/v1/articles/add"
+      body: "*"
+    };
+  }
+}
+
+message AddItemRequest{
+  AddItem add_item = 1;
+}
+
+message AddItem{
+  string item_name = 1;
+  string seller_id = 2;
+  BuyIt.Logistics.DecimalValue weight = 3;
+  BuyIt.Logistics.DecimalValue height = 4;
+  BuyIt.Logistics.DecimalValue length = 5;
+  BuyIt.Logistics.DecimalValue width = 6;
+  int32 count = 7;
+  string img_url = 9;
+}
+
+message AddItemResponse{
+  ItemResult add_item_result = 1;
+}
+
+message ItemResult{
+  int64 item_id = 1;
+  string result_message = 3;
+}
+
+message GetItemsByIdsRequest{
+  repeated int64 items_ids = 1;
+}
+
+message GetItemsByIdsResponse{
+  repeated Item items = 1;
+}
+
+message Item{
+  int64 item_id = 1;
+  string item_name = 2;
+  string seller_id = 3;
+  BuyIt.Logistics.DecimalValue weight = 4;
+  BuyIt.Logistics.DecimalValue height = 5;
+  BuyIt.Logistics.DecimalValue length = 6;
+  BuyIt.Logistics.DecimalValue width = 7;
+  int32 available_count = 8;
+  google.protobuf.Timestamp creation_date = 9;
+  google.protobuf.Timestamp changed_at = 10;
+}
+
+message ChangeItemRequest{
+  int64 item_id = 1;
+  string item_name = 2;
+  int32 height = 3;
+  int32 weight = 4;
+  int32 length = 5;
+  int32 width = 6;
+}
+
+message ChangeItemResponse{
+  ItemChangeResult ItemResult = 1;
+}
+
+message ItemChangeResult{
+  int64 item_id = 1;
+  bool item_changed = 2;
+  string result_message = 3;
+}
+
+message AddArticlesRequest{
+  int64 item_id = 1;
+  int32 count = 2;
+}
+
+message AddArticlesResponse{
+  string result_message = 1;
+}

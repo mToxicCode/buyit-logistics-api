@@ -1,0 +1,100 @@
+syntax = "proto3";
+option csharp_namespace = "ToxiCode.BuyIt.Logistics.Api.Grpc";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+import "protos/ItemsService.proto";
+import "google/api/annotations.proto";
+package BuyIt.Logistics;
+
+
+service OrdersService{
+  rpc AddOrder(AddOrderRequest) returns (AddOrderResponse){
+    option(google.api.http) = {
+      post: "/v1/orders/add"
+      body: "*"
+    };
+  }
+  rpc GetOrdersByBuyerId(GetOrdersByBuyerIdRequest) returns (GetOrdersByBuyerIdResponse){
+    option(google.api.http) = {
+      patch: "/v1/orders/get"
+      body: "*"
+    };
+  }
+  rpc OrderPaid(OrderPaidRequest) returns (OrderPaidResponse){
+    option(google.api.http) = {
+      put: "/v1/orders/change"
+      body: "*"
+    };
+  }
+  rpc CancelOrder(CancelOrderRequest) returns (CancelOrderResponse){
+    option(google.api.http) = {
+      post: "/v1/common/items/add"
+      body: "*"
+    };
+  }
+}
+
+message AddOrderRequest{
+  repeated ItemAmountPair items = 1;
+  int64 from_address_id = 4;
+  int64   to_address_id = 5;
+  string user_id = 2;
+}
+
+message ItemAmountPair{
+  int64 item_id = 1; 
+  int32 count = 2; 
+}
+
+message AddOrderResponse{
+  google.protobuf.Int64Value order_id = 1;
+  string result_message = 2;
+}
+
+message GetOrdersByBuyerIdRequest{
+  string buyer_id = 1; 
+}
+
+message GetOrdersByBuyerIdResponse{
+  repeated Order orders = 1;
+}
+
+message Order{
+  int64 order_id = 1;
+  google.protobuf.Timestamp created_date = 2;
+  OrderStatus order_status = 3;
+  int64 from_address_id = 4;
+  int64   to_address_id = 5;
+  repeated ItemAmountPair items = 6;
+  string BuyerId = 7;
+}
+
+
+enum OrderStatus{
+  Default = 0;
+  Created = 1;
+  Processing = 2;
+  Forming = 3;
+  Formed = 4;
+  Delivering = 5;
+  Delivered = 6;
+  Cancelled = 7;
+}
+
+message OrderPaidRequest{
+  int64 order_id = 1;
+}
+
+
+message OrderPaidResponse{
+  string result_message = 1;
+}
+
+message CancelOrderRequest{
+  int64 order_id = 1;
+}
+
+
+message CancelOrderResponse{
+  string result_message = 1;
+}

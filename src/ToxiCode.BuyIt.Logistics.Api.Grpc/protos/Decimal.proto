@@ -1,0 +1,9 @@
+syntax = "proto3";
+option csharp_namespace = "ToxiCode.BuyIt.Logistics.Api.Grpc";
+package BuyIt.Logistics;
+
+
+message DecimalValue {
+  int64 units = 1;
+  sfixed32 nanos = 2;
+}

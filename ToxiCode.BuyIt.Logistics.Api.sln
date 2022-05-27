@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToxiCode.BuyIt.Logistics.Ap
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToxiCode.BuyIt.Logistics.Api.Dtos", "src\ToxiCode.BuyIt.Logistics.Api.Dtos\ToxiCode.BuyIt.Logistics.Api.Dtos.csproj", "{DAD80286-F78A-40EE-99B4-E5B66DE2600B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToxiCode.BuyIt.Logistics.Api.Grpc", "src\ToxiCode.BuyIt.Logistics.Api.Grpc\ToxiCode.BuyIt.Logistics.Api.Grpc.csproj", "{907821A0-FF80-4782-AF78-6A5D2C2930D5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,10 +38,15 @@ Global
 		{DAD80286-F78A-40EE-99B4-E5B66DE2600B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DAD80286-F78A-40EE-99B4-E5B66DE2600B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DAD80286-F78A-40EE-99B4-E5B66DE2600B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{907821A0-FF80-4782-AF78-6A5D2C2930D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{907821A0-FF80-4782-AF78-6A5D2C2930D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{907821A0-FF80-4782-AF78-6A5D2C2930D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{907821A0-FF80-4782-AF78-6A5D2C2930D5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{F5B0C8B1-81AD-4BA5-B8AB-21A1C9C74FD6} = {A9176EE0-8CC8-409D-8581-3F9FC81B1414}
 		{734C9075-AF0E-44CB-A9C5-1FDB104D4027} = {F1F7FC49-302C-48A2-9F89-3F0DCC9A945A}
 		{DAD80286-F78A-40EE-99B4-E5B66DE2600B} = {A9176EE0-8CC8-409D-8581-3F9FC81B1414}
+		{907821A0-FF80-4782-AF78-6A5D2C2930D5} = {A9176EE0-8CC8-409D-8581-3F9FC81B1414}
 	EndGlobalSection
 EndGlobal
