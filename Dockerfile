@@ -34,6 +34,9 @@ RUN dotnet publish "src/ToxiCode.BuyIt.Logistics.Api/ToxiCode.BuyIt.Logistics.Ap
 
 FROM base AS final
 ENV DOTNET_RUNNING_IN_CONTAINER=true
+ENV ASPNETCORE_HTTP_PORT=80
+ENV ASPNETCORE_GRPC_PORT=82
+ENV ASPNETCORE_DEBUG_PORT=84
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "ToxiCode.BuyIt.Logistics.Api.dll"]
