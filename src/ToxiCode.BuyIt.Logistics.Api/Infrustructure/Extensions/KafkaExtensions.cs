@@ -1,3 +1,4 @@
+using ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Services;
 using ToxiCode.BuyIt.Logistics.Api.Kafka;
 
 namespace ToxiCode.BuyIt.Logistics.Api.Infrustructure.Extensions;
@@ -13,7 +14,8 @@ public static class KafkaExtensions
             .ValidateDataAnnotations();
 
         return services
-            .AddSingleton<IKafkaProducer, KafkaProducer>();
+            .AddSingleton<IKafkaProducer, KafkaProducer>().
+            AddSingleton<OrdersServiceNotificator>();
     }
 
 }

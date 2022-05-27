@@ -14,7 +14,7 @@ public class CreateArticleByItemIdHandler : AsyncRequestHandler<CreateArticleByI
 
     protected override async Task Handle(CreateArticleByItemIdCommand request, CancellationToken cancellationToken)
     {
-        var query = new CreateArticleByItemIdQuery()
+        var query = new CreateArticleByItemIdQuery
         {
             ItemId = request.ItemId,
             Count = request.Count

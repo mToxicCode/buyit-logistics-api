@@ -18,6 +18,7 @@
         <PackageReference Include="MediatR" Version="10.0.1" />
         <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
         <PackageReference Include="Microsoft.AspNetCore.Grpc.Swagger" Version="0.1.0-alpha.21317.5" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.5" />
         <PackageReference Include="Npgsql" Version="6.0.3" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.3" />
         <PackageReference Include="Scrutor" Version="4.1.0" />
@@ -43,7 +44,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="BusinessLayer\Commands\CreateOrder" />
       <Folder Include="Infrustructure" />
     </ItemGroup>
 

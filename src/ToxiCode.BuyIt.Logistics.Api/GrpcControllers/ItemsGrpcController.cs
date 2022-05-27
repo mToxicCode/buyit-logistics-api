@@ -61,7 +61,7 @@ public class ItemsGrpcController : GRPC.ItemsService.ItemsServiceBase
         {
             Items =
             {
-                response.Items.Select(x =>
+                response.Items!.Select(x =>
                     new GRPC.Item
                     {
                         ItemId = x.Id,

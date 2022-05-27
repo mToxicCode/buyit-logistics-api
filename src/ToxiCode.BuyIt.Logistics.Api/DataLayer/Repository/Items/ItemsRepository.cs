@@ -1,7 +1,5 @@
 ﻿using Dapper;
 using Dtos;
-using ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Commands.ChangeItemById.Contracnts;
-using ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Commands.CreateItem.Contracts;
 using ToxiCode.BuyIt.Logistics.Api.DataLayer.Repository.Items.Queries;
 using ToxiCode.BuyIt.Logistics.Api.DataLayer.Utils;
 
@@ -18,14 +16,14 @@ public class ItemsRepository
         const string getItemsQuery = $@"  SELECT 
 									 it.id, 
 									 seller_id SellerId,
-                                     item_name Name, 
+                                     item_name ItemName, 
                                      weight, 
                                      height, 
                                      length, 
                                      width, 
                                      it.creation_date CreationDate, 
                                      changed_at ChangedAt,
-                                     (SELECT count(a.id) 
+                                     (SELECT count(a.id) AvailableCount 
                                      FROM public.articles a
                                        LEFT JOIN public.articles_in_order aio ON aio.article_id = a.id
                                        LEFT JOIN public.orders o ON aio.order_id = o.id
@@ -34,6 +32,28 @@ public class ItemsRepository
                                         WHERE it.id = any(@Ids)";
         await using var db = _connectionFactory.CreateDatabase();
         return await db.Connection.QueryAsync<ItemDto>(db.CreateCommand(getItemsQuery, new {Ids}));
+    }
+
+    public async Task<IEnumerable<ItemDto>> GetItems()
+    {
+        const string getItemsQuery = $@"  SELECT 
+									 it.id, 
+									 seller_id SellerId,
+                                     item_name ItemName, 
+                                     weight, 
+                                     height, 
+                                     length, 
+                                     width, 
+                                     it.creation_date CreationDate, 
+                                     changed_at ChangedAt,
+                                     (SELECT count(a.id) AvailableCount 
+                                     FROM public.articles a
+                                       LEFT JOIN public.articles_in_order aio ON aio.article_id = a.id
+                                       LEFT JOIN public.orders o ON aio.order_id = o.id
+                                        WHERE a.item_id = it.id AND o.id IS NULL OR o.state = 'Cancelled'::State)
+                                        FROM items it";
+        await using var db = _connectionFactory.CreateDatabase();
+        return await db.Connection.QueryAsync<ItemDto>(db.CreateCommand(getItemsQuery));
     }
 
     public async Task<long> CreateItem(CreateItemQuery request, CancellationToken cancellationToken)
@@ -61,13 +81,34 @@ public class ItemsRepository
         return id;
     }
 
-    public async Task DeleteItemById(long itemId, CancellationToken cancellationToken)
+    public async Task<IEnumerable<ItemInOrder>> GetItemsByOrderId(long orderId, CancellationToken cancellationToken)
     {
-        const string DeleteItemQuery = $@"DELETE FROM {SqlConstants.Items} WHERE id = @Id ";
+        const string query = @"select i.id item_id from articles a 
+    inner join articles_in_order aio on aio.article_id = a.id 
+    inner join orders o on aio.order_id = o.id 
+    inner join items i on a.item_id = i.id 
+    where o.id = @OrderId";
 
         await using var db = _connectionFactory.CreateDatabase(cancellationToken);
 
-        await db.Connection.ExecuteAsync(DeleteItemQuery, new
+        var result = (await db.Connection.QueryAsync<long>(query, new
+        {
+            OrderId = orderId
+        })).ToArray();
+
+        var intersected = result.Distinct();
+
+        return intersected
+            .Select(item => new ItemInOrder {ItemId = item, Count = result.Count(x => x == item)}).ToList();
+    }
+
+    public async Task DeleteItemById(long itemId, CancellationToken cancellationToken)
+    {
+        const string deleteItemQuery = $@"DELETE FROM {SqlConstants.Items} WHERE id = @Id ";
+
+        await using var db = _connectionFactory.CreateDatabase(cancellationToken);
+
+        await db.Connection.ExecuteAsync(deleteItemQuery, new
         {
             Id = itemId
         });
@@ -81,7 +122,8 @@ public class ItemsRepository
                                             weight = @Weight,
                                             height = @Height,
                                             length = @Length,
-                                            width = @Width
+                                            width = @Width,
+                                            changed_at = @ChangedAt
                                             WHERE id = @Id ";
 
         await using var db = _connectionFactory.CreateDatabase(cancellationToken);
@@ -93,7 +135,8 @@ public class ItemsRepository
             command.Weight,
             command.Height,
             command.Length,
-            command.Width
+            command.Width,
+            ChangedAt = DateTime.Now
         });
     }
 }

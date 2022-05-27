@@ -14,7 +14,7 @@ service OrdersService{
       body: "*"
     };
   }
-  rpc GetOrders(GetOrdersRequest) returns (GetOrdersResponse){
+  rpc GetOrdersByBuyerId(GetOrdersByBuyerIdRequest) returns (GetOrdersByBuyerIdResponse){
     option(google.api.http) = {
       patch: "/v1/orders/get"
       body: "*"
@@ -43,7 +43,7 @@ message AddOrderRequest{
 
 message ItemAmountPair{
   int64 item_id = 1; 
-  int64 count = 2; 
+  int32 count = 2; 
 }
 
 message AddOrderResponse{
@@ -51,11 +51,11 @@ message AddOrderResponse{
   string result_message = 2;
 }
 
-message GetOrdersRequest{
+message GetOrdersByBuyerIdRequest{
   string buyer_id = 1; 
 }
 
-message GetOrdersResponse{
+message GetOrdersByBuyerIdResponse{
   repeated Order orders = 1;
 }
 
@@ -65,8 +65,10 @@ message Order{
   OrderStatus order_status = 3;
   int64 from_address_id = 4;
   int64   to_address_id = 5;
-  repeated int64 articles = 6;
+  repeated ItemAmountPair items = 6;
+  string BuyerId = 7;
 }
+
 
 enum OrderStatus{
   Default = 0;

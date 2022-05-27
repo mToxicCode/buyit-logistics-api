@@ -1,8 +1,8 @@
-﻿using Dtos;
+using MediatR;
 
 namespace ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Commands.GetItems.Contracts;
 
-public class GetItemResponse
+public class GetItemsCommand : IRequest<GetItemsResponse>
 {
-    public ItemDto? Item { get; set; }
+    
 }

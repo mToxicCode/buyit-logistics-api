@@ -29,14 +29,15 @@ public class InitMigration : ForwardOnlyMigration
 
         Create.Table(SqlConstants.Articles)
             .WithColumn("id").AsInt64().PrimaryKey().Identity()
-            .WithColumn("item_id").AsInt64();
+            .WithColumn("item_id").AsInt64().ForeignKey(SqlConstants.Items, "id");
 
         Create.Table(SqlConstants.Orders)
             .WithColumn("id").AsInt64().PrimaryKey().Identity()
             .WithColumn("creation_date").AsDateTime().WithDefault(SystemMethods.CurrentUTCDateTime)
             .WithColumn("from").AsInt64().ForeignKey(SqlConstants.Places, "id").NotNullable()
             .WithColumn("to").AsInt64().ForeignKey(SqlConstants.Places, "id").NotNullable()
-            .WithColumn("state").AsCustom("State");
+            .WithColumn("state").AsCustom("State")
+            .WithColumn("buyer_id").AsString(5000).NotNullable();
 
         Create.Table(SqlConstants.ArticlesInOrder)
             .WithColumn("id").AsInt64().PrimaryKey().Identity()
