@@ -31,7 +31,7 @@ public static class InfrastructureExtension
         return services.AddFluentMigratorCore()
             .ConfigureRunner(x
                 => x.AddPostgres()
-                    .WithGlobalConnectionString(configuration.GetConnectionString("Postgre"))
+                    .WithGlobalConnectionString(Environment.GetEnvironmentVariable("DATABASE_STRING"))
                     .ScanIn(Assembly.GetExecutingAssembly()).For.Migrations())
             .AddLogging(y => y.AddFluentMigratorConsole());
     }
