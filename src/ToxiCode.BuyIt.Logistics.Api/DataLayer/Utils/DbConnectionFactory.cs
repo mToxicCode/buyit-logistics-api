@@ -17,6 +17,6 @@ public class DbConnectionFactory : IDbConnectionFactory
 
     public DatabaseWrapper CreateDatabase(CancellationToken? cancellationToken = default)
         => new(
-            new NpgsqlConnection(_configuration.GetConnectionString("Postgre")),
+            new NpgsqlConnection(Environment.GetEnvironmentVariable("DATABASE_STRING")),
             cancellationToken ?? _cancellationTokenAccessor.Token);
 }

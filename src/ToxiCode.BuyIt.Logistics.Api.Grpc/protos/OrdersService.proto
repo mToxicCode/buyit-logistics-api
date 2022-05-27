@@ -69,6 +69,7 @@ message Order{
   string BuyerId = 7;
 }
 
+
 enum OrderStatus{
   Default = 0;
   Created = 1;

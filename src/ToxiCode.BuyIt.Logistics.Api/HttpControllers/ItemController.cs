@@ -7,7 +7,6 @@ using ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Commands.GetItems.Contracts;
 namespace ToxiCode.BuyIt.Logistics.Api.HttpControllers;
 
 [ApiController]
-[Route("api")]
 public class ItemController : ControllerBase
 {
     private readonly HttpCancellationTokenAccessor _cancellationToken;
@@ -19,7 +18,7 @@ public class ItemController : ControllerBase
         _mediator = mediator;
     }
 
-    [HttpPost("itemsByIds/")]
+    [HttpPost("api/itemsByIds/")]
     public async Task<ActionResult<ItemDto?>> GetItemByIds(long[] itemsIds)
     {
         var command = new GetItemsByIdsCommand
@@ -30,7 +29,7 @@ public class ItemController : ControllerBase
         return Ok(result.Items);
     }
 
-    [HttpGet("item/{itemId:long}")]
+    [HttpGet("api/item/{itemId:long}")]
     public async Task<ActionResult<ItemDto?>> GetItemById(long itemId)
     {
         var command = new GetItemsByIdsCommand()
@@ -41,7 +40,7 @@ public class ItemController : ControllerBase
         return Ok(result.Items!.FirstOrDefault());
     }
 
-    [HttpGet("items")]
+    [HttpGet("api/items")]
     public async Task<ActionResult<IEnumerable<ItemDto?>>> GetItems()
     {
         var command = new GetItemsCommand();
@@ -49,14 +48,14 @@ public class ItemController : ControllerBase
         return Ok(result.Items);
     }
 
-    [HttpDelete("item/{itemId:long}")]
+    [HttpDelete("api/item/{itemId:long}")]
     public async Task<ActionResult> DeleteItem(long itemId)
     {
         await _mediator.Send(itemId, _cancellationToken.Token);
         return Ok();
     }
 
-    [HttpPut("item/")]
+    [HttpPut("api/item/")]
     public async Task<ActionResult> ChangeItem([FromBody] ChangeItemCommand command)
     {
         await _mediator.Send(command, _cancellationToken.Token);

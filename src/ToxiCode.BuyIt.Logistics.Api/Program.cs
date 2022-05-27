@@ -9,29 +9,12 @@ using ToxiCode.BuyIt.Logistics.Api.DataLayer.Extensions;
 using ToxiCode.BuyIt.Logistics.Api.GrpcControllers;
 using ToxiCode.BuyIt.Logistics.Api.Infrustructure.Extensions;
 
-var builder = WebApplication.CreateBuilder(args);
-
-
-builder.WebHost.ConfigureKestrel(
-    options =>
-    {
-        Listen(options, 5000, HttpProtocols.Http1);
-        Listen(options, 5002, HttpProtocols.Http2);
-    });
-
-static void Listen(KestrelServerOptions kestrelServerOptions, int? port, HttpProtocols protocols)
-{
-    if (port == null)
-        return;
-
-    var address = IPAddress.Loopback;
-
-
-    kestrelServerOptions.Listen(address, port.Value, listenOptions => { listenOptions.Protocols = protocols; });
-}
-
+var builder = WebApplication
+    .CreateBuilder(args);
+builder.ConfigurePorts();
 var services = builder.Services;
 
+services.AddControllers();
 services.AddEndpointsApiExplorer();
 services.AddDatabaseInfrastructure(builder.Configuration);
 services.AddControllers();
@@ -63,6 +46,6 @@ app.UseCors(x => x
 app.MapGrpcService<ItemsGrpcController>();
 app.MapGrpcService<OrdersGrpcController>();
 app.Migrate();
-app.Run();
+await app.RunAsync();
 
 #endregion

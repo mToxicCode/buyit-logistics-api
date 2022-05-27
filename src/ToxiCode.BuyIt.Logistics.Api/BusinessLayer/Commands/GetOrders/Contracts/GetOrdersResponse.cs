@@ -4,5 +4,5 @@ namespace ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Commands.GetOrders.Contract
 
 public class GetOrdersResponse
 {
-    public OrderDto[] Orders { get; set; } = null!;
+    public IEnumerable<OrderDto>? Orders { get; set; }
 }

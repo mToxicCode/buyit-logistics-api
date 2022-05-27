@@ -35,7 +35,11 @@ public class GetOrdersByBuyerIdHandler : IRequestHandler<GetOrdersByBuyerIdComma
         var orders = await _ordersRepository.GetOrdersByBuyerId(query);
         foreach (var order in orders)
         {
-            // order.Items = await _itemsRepository.GetItemsByOrderId(order.Id);
+            var articlesQuery = new GetArticlesByOrderIdQuery
+            {
+                OrderId = order.Id
+            };
+            order.Items = await _itemsRepository.GetItemsByOrderId(order.Id, cancellationToken);
         }
 
         return new GetOrdersByBuyerIdResponse

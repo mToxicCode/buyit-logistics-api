@@ -22,38 +22,18 @@ public class OrderController : ControllerBase
         _mediator = mediator;
     }
 
-    [HttpGet("orders")]
+    [HttpGet("Orders")]
     public async Task<ActionResult<IEnumerable<OrderDto?>>> GetOrders()
     {
         var request = new GetOrdersCommand();
-        var result = await _mediator.Send(request);
-        return Ok(result.Orders);
-    }
-    
-    [HttpGet("orderById/{orderId:long}")]
-    public async Task<ActionResult<OrderDto>> GetOrderById(long orderId)
-    {
-        var command = new GetOrderByIdCommand
-        {
-            OrderId = orderId
-        };
-        var result = await _mediator.Send(command);
-        return Ok(result.Orders);
+        var result = await _mediator.Send(request, _cancellationToken.Token);
+        return Ok(result);
     }
 
-    [HttpGet("order/{buyerId}")]
-    public async Task<ActionResult<IEnumerable<OrderDto>>> GetOrderByBuyerId(string buyerId)
-    {
-        var command = new GetOrdersByBuyerIdCommand
-        {
-            BuyerId = buyerId,
-        };
-        
-        var response = await _mediator.Send(command); 
-        return Ok(response.Orders);
-    }
+    // [HttpGet("api/Order/{orderId:long}")]
+    // public async Task<ActionResult> GetOrderByBuyerId(long orderId) => Ok(await _resolver.GetOrder(orderId));
 
-    [HttpPost("order/create")]
+    [HttpPost("Order/Create")]
     public async Task<ActionResult<long>> CreateOrder([FromBody] CreateOrderCommand request)
         => Ok(await _mediator.Send(request, _cancellationToken.Token));
     //
