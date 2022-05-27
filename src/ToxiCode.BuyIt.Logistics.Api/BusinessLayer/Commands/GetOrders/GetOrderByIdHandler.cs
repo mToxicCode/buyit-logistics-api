@@ -26,12 +26,12 @@ public class GetOrderByIdHandler : IRequestHandler<GetOrderByIdCommand, GetOrder
         {
             OrderId = request.OrderId
         };
-        var order = await _ordersRepository.GetOrderById(query);
+        var order = await _ordersRepository.GetOrderById(query.OrderId);
 
         if (order == null)
             return new GetOrderByIdResponse();
 
-        order.Items = await _itemsRepository.GetItemsByOrderId(order.Id);
+        order.Items = await _itemsRepository.GetItemsByOrderId(order.Id, cancellationToken);
 
 
         return new GetOrderByIdResponse
