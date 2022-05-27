@@ -1,6 +1,5 @@
 ﻿using Dapper;
 using Dtos;
-using MediatR;
 using ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Commands.ChangeOrderById.Contracts;
 using ToxiCode.BuyIt.Logistics.Api.DataLayer.Repository.Orders.Queries;
 using ToxiCode.BuyIt.Logistics.Api.DataLayer.Utils;
@@ -46,13 +45,20 @@ public class OrdersRepository
         return orders;
     }
 
-    public async Task<OrderDto?> GetOrderById(long OrderId)
+    public async Task<OrderDto?> GetOrderById(GetOrderByIdQuery request)
     {
-        const string getOrderByIdQuery = $@"SELECT id, name, price, weight FROM {SqlConstants.Orders} WHERE id = @Id";
+        const string getOrderByIdQuery = $@"SELECT id AS Id, 
+                                        creation_date AS CreationDate, 
+                                        ""from"",
+                                        ""to"",
+                                        ""state"" AS Status,
+                                        buyer_id AS BuyerId 
+                                        FROM {SqlConstants.Orders}
+                                        WHERE id = @OrderId";
         await using var db = _connectionFactory.CreateDatabase();
         OrderDto requestOrder = await db.Connection.QueryFirstOrDefaultAsync<OrderDto>(db.CreateCommand(getOrderByIdQuery, new
         {
-            Id = OrderId
+            request.OrderId
         }));
         return requestOrder;
     }

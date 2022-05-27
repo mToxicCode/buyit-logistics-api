@@ -9,9 +9,12 @@ public class ItemsRepository
 {
     private readonly IDbConnectionFactory _connectionFactory;
 
-    public ItemsRepository(IDbConnectionFactory connectionFactory) => _connectionFactory = connectionFactory;
+    public ItemsRepository(IDbConnectionFactory connectionFactory)
+    {
+        _connectionFactory = connectionFactory;
+    }
 
-    public async Task<IEnumerable<ItemDto>> GetItemsByIds(long[] Ids)
+    public async Task<IEnumerable<ItemDto>> GetItemsByIds(GetItemsByIdsQuery ids)
     {
         const string getItemsQuery = $@"  SELECT 
 									 it.id, 
@@ -31,7 +34,10 @@ public class ItemsRepository
                                         FROM items it
                                         WHERE it.id = any(@Ids)";
         await using var db = _connectionFactory.CreateDatabase();
-        return await db.Connection.QueryAsync<ItemDto>(db.CreateCommand(getItemsQuery, new {Ids}));
+        return await db.Connection.QueryAsync<ItemDto>(db.CreateCommand(getItemsQuery, new
+        {
+            Ids = ids
+        }));
     }
 
     public async Task<IEnumerable<ItemDto>> GetItems()
@@ -81,25 +87,33 @@ public class ItemsRepository
         return id;
     }
 
-    public async Task<IEnumerable<ItemInOrder>> GetItemsByOrderId(long orderId, CancellationToken cancellationToken)
+    public async Task<IEnumerable<ItemInOrder>> GetItemsByOrderId(long orderId)
     {
-        const string query = @"select i.id item_id from articles a 
+        const string query = @"select i.id item_id, i.item_name ItemName from articles a 
     inner join articles_in_order aio on aio.article_id = a.id 
     inner join orders o on aio.order_id = o.id 
     inner join items i on a.item_id = i.id 
     where o.id = @OrderId";
 
-        await using var db = _connectionFactory.CreateDatabase(cancellationToken);
+        await using var db = _connectionFactory.CreateDatabase();
 
-        var result = (await db.Connection.QueryAsync<long>(query, new
+        var result = (await db.Connection.QueryAsync<(long, string)>(query, new
         {
             OrderId = orderId
         })).ToArray();
 
         var intersected = result.Distinct();
 
-        return intersected
-            .Select(item => new ItemInOrder {ItemId = item, Count = result.Count(x => x == item)}).ToList();
+        var items = intersected
+            .Select(item =>
+                new ItemInOrder
+                {
+                    ItemId = item.Item1,
+                    ItemName = item.Item2,
+                    Count = result.Count(x => x == item)
+                }).ToList();
+
+        return items;
     }
 
     public async Task DeleteItemById(long itemId, CancellationToken cancellationToken)

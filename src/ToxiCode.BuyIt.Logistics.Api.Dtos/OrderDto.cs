@@ -15,6 +15,7 @@ public class OrderDto
 
 public class ItemInOrder
 {
+    public string ItemName { get; set; } = null!;
     public long ItemId { get; set; }
     public int Count { get; set; }
 }
