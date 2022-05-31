@@ -1,9 +1,6 @@
 ﻿using Dtos;
-using JetBrains.Annotations;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Commands;
-using ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Commands.ChangeOrderById.Contracts;
 using ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Commands.CreateOrder.Contracts;
 using ToxiCode.BuyIt.Logistics.Api.BusinessLayer.Commands.GetOrders.Contracts;
 

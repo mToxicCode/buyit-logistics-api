@@ -18,4 +18,3 @@ public class ItemInOrder
     public long ItemId { get; set; }
     public int Count { get; set; }
 }
-
