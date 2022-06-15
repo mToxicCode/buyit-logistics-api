@@ -50,7 +50,7 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderCommand, CreateOrde
         {
             OrderId = orderId
         };
-        await _notificator.NotifyStatusChanged(orderId, OrderStatus.Created, cancellationToken);
+        // await _notificator.NotifyStatusChanged(orderId, OrderStatus.Created, cancellationToken);
         return result;
     }
 }

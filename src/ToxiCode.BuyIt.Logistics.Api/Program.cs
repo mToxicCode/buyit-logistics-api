@@ -14,6 +14,7 @@ var builder = WebApplication
 builder.ConfigurePorts();
 var services = builder.Services;
 
+services.AddControllers();
 services.AddEndpointsApiExplorer();
 services.AddDatabaseInfrastructure(builder.Configuration);
 services.AddControllers();
